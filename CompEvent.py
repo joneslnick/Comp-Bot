@@ -65,7 +65,7 @@ class CompEvent:
 
         print(f"{len(self.player_list)} are ready for comp!")
         
-        if self.players_ready >= MIN_PLAYERS:
+        if len(self.player_list) >= MIN_PLAYERS:
             message = ""
             for player in self.player_list:
                 message += f"{player.mention} "
