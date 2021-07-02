@@ -9,6 +9,7 @@ description = "Manages Comp RSVP's. Pings all participating members when 5 react
 intents = discord.Intents.default()
 intents.members = True
 intents.reactions = True
+intents.emojis = True
 
 
 BOT = commands.Bot(command_prefix='/', description=description, intents=intents)
@@ -42,7 +43,7 @@ async def on_reaction_add(reaction, user):
 
     for event in COMP_EVENTS:
         if event.message.id == reaction.message.id: #Reaction was added to a valid comp event
-            print(f"User {user} has reacted with {reaction.emoji.name}")
+            print(f"User {user} has reacted with {reaction.emoji}")
             event.reactions.append((reaction,user)) #Add reaction to list of reactions for specific event
             
         game = await event.ProcessReactions()
@@ -56,7 +57,7 @@ async def on_reaction_remove(reaction, user):
 
     for event in COMP_EVENTS:
         if event.message.id == reaction.message.id: #Reaction was removed from a valid comp event
-            print(f"User {user} has removed their reaction of {reaction.emoji.name}")
+            print(f"User {user} has removed their reaction of {reaction.emoji}")
             event.reactions.remove((reaction,user)) #Remove reaction from reaction list
         await event.ProcessReactions()
         await event.message.edit(content=f"<{COMP_GROUP_ID}> @{event.ctx.author} has called for Comp! \n\t Players Ready: {len(event.player_list)}")

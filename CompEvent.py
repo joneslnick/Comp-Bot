@@ -1,30 +1,31 @@
-from datetime import date, datetime, time, timedelta
+from datetime import datetime, time
+import emoji
 
 TIME_REACTIONS = {
-    ":clock12:": time(0,0,0),
-    ":clock1230:": time(0,30,0),
-    ":clock1:": time(13,0,0),
-    ":clock130:": time(14,30,0),
-    ":clock2:": time(14,0,0),
-    ":clock230:": time(14,30,0),
-    ":clock3:": time(15,0,0),
-    ":clock330:": time(15,30,0),
-    ":clock4:": time(16,0,0),
-    ":clock430:": time(16,30,0),
-    ":clock5:": time(17,0,0),
-    ":clock530:": time(17,30,0),
-    ":clock6:": time(18,0,0),
-    ":clock630:": time(18,30,0),
-    ":clock7:": time(19,0,0),
-    ":clock730:": time(19,30,0),
-    ":clock8:": time(20,0,0),
-    ":clock830:": time(20,30,0),
-    ":clock9:": time(21,0,0),
-    ":clock930:": time(22,30,0),
-    ":clock10:": time(22,0,0),
-    ":clock1030:": time(22,30,0),
-    ":clock11:": time(23,0,0),
-    ":clock1130:": time(23,30,0),
+    ":twelve_o’clock:": time(0,0,0),
+    ":twelve-thirty:": time(0,30,0),
+    ":one_o’clock:": time(13,0,0),
+    ":one-thirty:": time(14,30,0),
+    ":two_o’clock:": time(14,0,0),
+    ":two-thirty:": time(14,30,0),
+    ":three_o’clock:": time(15,0,0),
+    ":three-thirty:": time(15,30,0),
+    ":four_o’clock:": time(16,0,0),
+    ":four-thirty:": time(16,30,0),
+    ":five_o’clock:": time(17,0,0),
+    ":five-thirty:": time(17,30,0),
+    ":six_o’clock:": time(18,0,0),
+    ":six-thirty:": time(18,30,0),
+    ":seven_o’clock:": time(19,0,0),
+    ":seven-thirty:": time(19,30,0),
+    ":eight_o’clock:": time(20,0,0),
+    ":eight-thirty:": time(20,30,0),
+    ":nine_o’clock:": time(21,0,0),
+    ":nine-thirty:": time(22,30,0),
+    ":ten_o’clock:": time(22,0,0),
+    ":ten-thirty:": time(22,30,0),
+    ":eleven_o’clock:": time(23,0,0),
+    ":eleven-thirty:": time(23,30,0),
 
 }
 
@@ -47,7 +48,6 @@ class CompEvent:
         self.player_list = []
         
         for reaction in self.reactions:
-
             if reaction[1] in self.player_list: #User has reacted multiple times, ignore this reaction
                 print("User has already reacted. Ignoring reaction")
                 pass
@@ -57,11 +57,16 @@ class CompEvent:
                     print("Someone can play right now!")
                     self.player_list.append(reaction[1])
             else:
-                if "clock" in reaction[0].emoji: #User can play at a later time
+                demoji = emoji.demojize(str(reaction[0]))
+                if demoji == "five_o'clock":
+                    print("SUCCESS")
+                print(demoji)
+                if ("clock" in demoji) or ("thirty" in demoji): #User can play at a later time
                     print("Someone can play at a later day!")
-                    time = self.ProcessTime(reaction[0]) #Returns datetime object
-                    if time < time.now().time(): #If reaction time is prior to curr_time (player is available)
-                        self.players_lis.append(reaction[1])
+                    time = self.ProcessTime(demoji) #Returns datetime object
+                    print(f"React Time: {time} VS. Current Time: {datetime.now().time()}")
+                    if time < datetime.now().time(): #If reaction time is prior to curr_time (player is available)
+                        self.player_list.append(reaction[1])
 
         print(f"{len(self.player_list)} are ready for comp!")
         
@@ -76,5 +81,4 @@ class CompEvent:
         return 
                    
     def ProcessTime(self, time_reaction):
-        global TIME_REACTIONS
         return TIME_REACTIONS.get(time_reaction)
