@@ -47,12 +47,12 @@ class CompEvent:
         MIN_PLAYERS = 5
         
         self.player_list = [] #Clear list in case reactions were removed
-        
+
         for reaction in self.reactions:
             if reaction[1] in self.player_list: #User has reacted multiple times, ignore this reaction
                 pass
 
-            if reaction[0].custom_emoji:
+            elif reaction[0].custom_emoji:
                 if reaction[0].emoji.name == "csgo": #User can play right now
                     self.player_list.append(reaction[1])
             else:

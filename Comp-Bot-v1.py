@@ -33,7 +33,7 @@ class Cog(commands.Cog):
         print("Checking if any events have expired")
         for event in COMP_EVENTS:
             if (datetime.now() > (event.start_time + timedelta(hours = EXPIRE_TIME))): #Event has expired
-                event.selfDestruct()
+                await event.selfDestruct()
                 COMP_EVENTS.remove(event)
 
 def main():
