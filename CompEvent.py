@@ -46,6 +46,8 @@ class CompEvent:
     async def ProcessReactions(self):
         MIN_PLAYERS = 5
         
+        self.player_list = [] #Clear list in case reactions were removed
+        
         for reaction in self.reactions:
             if reaction[1] in self.player_list: #User has reacted multiple times, ignore this reaction
                 pass
